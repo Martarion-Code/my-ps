@@ -1,0 +1,19 @@
+function prosesPengirimanAtauPickUp(idPemesanan, opsi, lokasiPengguna = null, lokasiPickUp = null) {
+  if (opsi === "pengiriman") {
+    if (!lokasiPengguna) {
+      return "Lokasi pengguna tidak tersedia untuk pengiriman.";
+    }
+    return kirimPS(idPemesanan, lokasiPengguna);
+  } else if (opsi === "pick-up") {
+    if (!lokasiPickUp) {
+      return "Lokasi pick-up tidak tersedia.";
+    }
+    return pickUpPS(idPemesanan, lokasiPickUp);
+  } else {
+    return "Opsi tidak valid. Pilih 'pengiriman' atau 'pick-up'.";
+  }
+}
+
+// Contoh penggunaan:
+console.log(prosesPengirimanAtauPickUp(12345, "pengiriman", "Jl. Merdeka, No.10"));
+console.log(prosesPengirimanAtauPickUp(12345, "pick-up", null, "Store Jakarta Selatan"));
