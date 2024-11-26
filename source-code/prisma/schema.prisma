@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+
+model User {
+  id            Int       @id @default(autoincrement()) // Equivalent to SERIAL PRIMARY KEY
+  username      String?    @db.VarChar(255) @unique     // VARCHAR NOT NULL with a unique constraint
+  password      String?    @db.VarChar(255)             // VARCHAR NOT NULL
+  role          String?    @db.VarChar(255)             // VARCHAR NOT NULL
+  provider      String?    @db.VarChar(50)              // VARCHAR(50) NOT NULL
+  provider_id   String?   @db.VarChar(255)             // VARCHAR(255) NOT NULL
+  access_token  String?   @db.Text                     // TEXT, nullable
+  refresh_token String?   @db.Text                     // TEXT, nullable
+  token_expiry  DateTime?                             // TIMESTAMP, nullable
+  email         String?    @unique
+  emailVerified DateTime?
+  name          String?
+  created_at    DateTime  @default(now())              // TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  updated_at    DateTime?  @updatedAt                   // TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  accounts      Account[]
+  image          String?
+  Transaksi Transaksi[]                              // One-to-many relation with Transaksi
+}
+
+model Ps {
+  id       Int         @id @default(autoincrement()) // Equivalent to SERIAL PRIMARY KEY
+  kategori String      @db.VarChar(255)              // VARCHAR NOT NULL
+  harga    String      @db.VarChar(255)              // VARCHAR NOT NULL
+  stok     Int                                      // INTEGER NOT NULL
+
+  Transaksi Transaksi[]                              // One-to-many relation with Transaksi
+}
+
+model Transaksi {
+  id            Int      @id @default(autoincrement()) // Equivalent to SERIAL PRIMARY KEY
+  user_id       Int?
+  ps_id         Int?
+  nama_cust     String   @db.VarChar(255)              // VARCHAR NOT NULL
+  no_hp         String   @db.VarChar(255)              // VARCHAR NOT NULL
+  alamat_cust   String   @db.VarChar(255)              // VARCHAR NOT NULL
+  waktu_pinjam  Int                                   // INTEGER NOT NULL
+  waktu_kembali Int                                   // INTEGER NOT NULL
+  harga_total   String   @db.VarChar(255)              // VARCHAR NOT NULL
+  
+  // Relations
+  User   User?   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  Ps     Ps?     @relation(fields: [ps_id], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  id                Int      @id @default(autoincrement()) // Use an integer auto-incrementing primary key
+  userId            Int
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?  // Optional string
+  access_token      String?  // Optional string
+  expires_at        Int?     // Optional integer for expiration timestamp
+  token_type        String?  // Optional string for token type
+  scope             String?  // Optional string for scope
+  id_token          String?  // Optional string for ID token
+  session_state     String?  // Optional string for session state
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId]) // Ensure provider and providerAccountId are unique together
+}
+
+
