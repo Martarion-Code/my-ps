@@ -5,6 +5,7 @@ export async function GET(request) {
   const username = searchParams.get('username'); // Extract 'username' query parameter
 
   try {
+    console.log(db.users)
     const psData = username
       ? await db.users.findMany({
           where: {
@@ -15,6 +16,7 @@ export async function GET(request) {
           },
         })
       : await db.users.findMany();
+      console.log(psData)
     return NextResponse.json(psData);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

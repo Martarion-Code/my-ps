@@ -9,6 +9,10 @@ const nextConfig = {
  
     return config
   },
+  // instrumentationHook: true,
+  experimental: {
+    // instrumentationHook: true,
+  },
   images: {
     remotePatterns: [
       {

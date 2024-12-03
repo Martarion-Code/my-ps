@@ -1,8 +1,12 @@
-const http = require('http');
-const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
+'use server';
+global.fetch = require('node-fetch');
 const fs = require('fs');
-const url = require('url');
+
+const http = require('http');
 const querystring = require('querystring');
+const url = require('url');
+const qrcode = require("qrcode-terminal");
+const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 
 const port = 4000;
 
@@ -12,15 +16,17 @@ const client = new Client({
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   },
   authStrategy: new LocalAuth(),
-  webVersionCache: {
-    type: "remote",
-    remotePath:
-      "https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2412.54.html",
-  },
+//   webVersionCache: {
+//     type: "remote",
+//     remotePath:
+//       "https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2412.54.html",
+//   },
 });
 
 client.on('qr', (qr) => {
     // Generate and scan this code with your phone
+    qrcode.generate(qr, { small: true });
+
     console.log('QR RECEIVED', qr);
 });
 

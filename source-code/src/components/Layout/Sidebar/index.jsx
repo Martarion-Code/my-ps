@@ -11,6 +11,7 @@ const SiderWithState = ({ transformedPermissions }) => {
 
   
 
+
   const collapsedHandler = (value) => {
     setCollapsed(value);
   };
@@ -71,7 +72,7 @@ const SiderComponent = ({ collapsed, collapsedHandler }) => {
         defaultSelectedKeys={[currentPath]}
         mode="inline"
         items={menus}
-        onClick={handleSelectMenu}
+        onSelect={handleSelectMenu}
       />
     </Sider>
   );

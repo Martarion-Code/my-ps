@@ -19,12 +19,13 @@ import {
   Select,
   Table,
 } from "antd";
+import { useEffect, useState } from "react";
 // import MainStatusComponent from "@/components/Tag/Status";
 
 const { Text, Title } = Typography;
 
 // Fetch offerings data directly from Prisma
-async function fetchOfferings({
+async function fetchPS ({
   search,
   status,
   startDate,
@@ -41,9 +42,27 @@ async function fetchOfferings({
     // orderBy: { date },
   });
 }
-
+  
 // Server component for the Offering page
 export default  function Page() {
+  const [ps, setPs] = useState([])
+  const get = async () => {
+    const response = await fetch('/api/users/list', {
+      method: 'GET',
+    });
+
+    console.log(response)
+    setPs(response)
+  }
+
+  useEffect(() => {
+    get()
+  
+    return () => {
+      
+    }
+  }, [])
+  
   // const offerings = await fetchOfferings({});
   const STATUS_OPTIONS = [
     { label: "New", value: "new" },
@@ -57,9 +76,9 @@ export default  function Page() {
 
   const columns = [
     {
-      key: "document_number",
-      title: "Document Number",
-      dataIndex: "document_number",
+      key: "kategori",
+      title: "Kategori",
+      dataIndex: "kategori",
       // render: (value) => <Text strong>{value}</Text>,
     },
     {
@@ -118,7 +137,7 @@ export default  function Page() {
 
   return (
     <div>
-      <Title level={2}>List Transaction</Title>
+      <Title level={2}>List Users</Title>
       <Row gutter={[20, 20]}>
         <Col span={24}>
           <Form>
@@ -146,7 +165,7 @@ export default  function Page() {
           </Form>
         </Col>
       </Row>
-      <Table columns={columns} dataSource={[]} rowKey="id" />
+      <Table columns={columns} dataSource={ps} rowKey="id" />
     </div>
   );
 }

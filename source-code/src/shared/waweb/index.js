@@ -1,9 +1,5 @@
-// pages/api/whatsapp.js
 import qrcode from "qrcode-terminal";
-import { NextResponse } from "next/server";
 import { Client, LocalAuth } from "whatsapp-web.js";
-// import { Client, LocalAuth } from "whatsapp-web.js";
-// import qrcode from "qrcode-terminal";
 
 // Create a single instance of the WhatsApp client
 const client = new Client({
@@ -67,27 +63,4 @@ client.on("message", (msg) => {
 // Initialize the client once
 client.initialize();
 
-export async function GET() {
-  try {
-    // Example: Sending a message
-    const chatId = "6282281480430@c.us"; // WhatsApp ID
-    const message = "Hello from Next.js!";
-
-    await client.sendMessage(chatId, message);
-
-    return NextResponse.json({ message: "Message sent!" });
-  } catch (error) {
-    console.error("Error sending message:", error);
-    return NextResponse.json(
-      { error: "Failed to send message" },
-      { status: 500 }
-    );
-  }
-}
-
-export async function POST() {
-  return NextResponse.json(
-    { message: "POST method is not implemented" },
-    { status: 405 }
-  );
-}
+export default client;
