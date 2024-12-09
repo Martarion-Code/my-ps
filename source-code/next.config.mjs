@@ -12,7 +12,9 @@ const nextConfig = {
   // instrumentationHook: true,
   experimental: {
     // instrumentationHook: true,
+    // swcMinify: true, // Enables SWC for production builds
   },
+
   images: {
     remotePatterns: [
       {

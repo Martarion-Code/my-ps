@@ -1,5 +1,5 @@
 import {  Card } from 'antd';
-import Title from 'antd/es/typography/Title';
+// import Title from 'antd/es/typography/Title';
 import { Suspense } from 'react';
 import { onDeleteTransaction } from './actions';
 import { fetchTransactions } from './actions';
@@ -53,7 +53,7 @@ export default async function TransactionsPage({
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Card>
-        <Title level={2}>List of Transactions</Title>
+        {/* <Title level={2}>List of Transactions</Title> */}
        <ButtonCreate />
         <PaginatedTable
           columns={columns}

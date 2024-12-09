@@ -1,5 +1,5 @@
 import {  Card } from 'antd';
-import Title from 'antd/es/typography/Title';
+// import Title from 'antd/es/typography/Title';
 import { Suspense } from 'react';
 import { onDeleteUser } from './actions';
 import { fetchUsers } from './actions';
@@ -34,7 +34,7 @@ export default async function UsersPage({
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Card>
-        <Title level={2}>List of Users</Title>
+        {/* <Title level={2}>List of Users</Title> */}
        <ButtonCreate ></ButtonCreate>
         <PaginatedTable
           columns={columns}

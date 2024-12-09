@@ -33,6 +33,8 @@ const jestConfig = {
   //   '\\.(css|less|scss|sass)$': 'identity-obj-proxy', // Mock CSS imports
   //   '\\.(jpg|jpeg|png|gif|webp|svg)$': '<rootDir>/__mocks__/fileMock.js', // Mock static files
   // },
+  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/']
+
 };
 
 module.exports = createJestConfig(jestConfig);
