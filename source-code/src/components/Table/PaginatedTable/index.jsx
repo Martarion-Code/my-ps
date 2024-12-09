@@ -34,6 +34,8 @@ export default function PaginatedTable({
             <Button 
               type="primary" 
               danger 
+              ghost
+              // icon={}
               onClick={() => handleDelete(record.id)}
             >
               Delete
@@ -44,29 +46,35 @@ export default function PaginatedTable({
     : columns;
 
   const handleDelete = async (id) => {
+    console.log(id)
     if (onDelete) {
       await onDelete(id);
       setData(data.filter(item => item.id !== id));
     }
   };
 
-  const handleTableChange = async (newPagination) => {
+  const handleTableChange = async (pagination) => {
     const params = new URLSearchParams(searchParams);
-    params.set('page', newPagination.current.toString());
-    params.set('limit', newPagination.pageSize.toString());
+    params.set('page', pagination.current.toString());
+    params.set('limit', pagination.pageSize.toString());
     
     router.push(`${pathname}?${params.toString()}`)
     
-    // If fetchData is provided, call it to update data
-    if (fetchData) {
-      await fetchData({
-        page: newPagination.current,
-        limit: newPagination.pageSize,
-      });
-    }
+    const { data: newData, pagination: newPagination } = await fetchData({
+      page: pagination.current,
+      limit: pagination.pageSize,
+    });
     
-    setPagination(newPagination);
-    // router.prefetch()
+    // Update client-side state
+    setData(newData);
+    setPagination({
+      current: newPagination.page,
+      pageSize: newPagination.limit,
+      total: newPagination.total,
+    });
+
+    // Trigger server-side revalidation
+    router.refresh();
     // This will trigger a server-side re-render
   };
 

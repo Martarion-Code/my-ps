@@ -12,12 +12,6 @@ export default function LoginPage() {
         >
           Login with Google
         </button>
-        <button 
-          onClick={() => signIn('facebook')} 
-          className="w-full flex items-center justify-center bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-200"
-        >
-          Login with Facebook
-        </button>
       </div>
     </div>
   );

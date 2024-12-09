@@ -1,6 +1,6 @@
 "use client";
-
-import { Form, Input, Button, message, InputNumber } from "antd";
+import { Form, Input, Button, message, InputNumber, Card } from "antd";
+// import Title from "antd/es/typography/Title";
 import { useState } from "react";
 
 const CreatePsPage = () => {
@@ -31,48 +31,50 @@ const CreatePsPage = () => {
   };
 
   return (
-    <div style={{ maxWidth: 600, margin: "0 auto", padding: "20px" }}>
-      <h1>Create PS</h1>
-      <Form
-        form={form}
-        layout="vertical"
-        onFinish={onFinish}
-        initialValues={{ kategori: "", harga: "", stok: "" }}
-      >
-        <Form.Item
-          label="Kategori"
-          name="kategori"
-          rules={[{ required: true, message: "Please enter the kategori!" }]}
+    <Card>
+      <div style={{ maxWidth: 400, padding: "20px" }}>
+        {/* <Title level={2}>Create PS</Title> */}
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={onFinish}
+          initialValues={{ kategori: "", harga: "", stok: "" }}
         >
-          <Input placeholder="Enter kategori" />
-        </Form.Item>
+          <Form.Item
+            label="Kategori"
+            name="kategori"
+            rules={[{ required: true, message: "Please enter the kategori!" }]}
+          >
+            <Input placeholder="Enter kategori" />
+          </Form.Item>
 
-        <Form.Item
-          label="Harga"
-          name="harga"
-          rules={[{ required: true, message: "Please enter the harga!" }]}
-        >
-          <Input placeholder="Enter harga" />
-        </Form.Item>
+          <Form.Item
+            label="Harga"
+            name="harga"
+            rules={[{ required: true, message: "Please enter the harga!" }]}
+          >
+            <InputNumber placeholder="Enter harga" style={{width:"100%"}} />
+          </Form.Item>
 
-        <Form.Item
-          label="Stok"
-          name="stok"
-          rules={[
-            { required: true, message: "Please enter the stok!" },
-            { pattern: /^\d+$/, message: "Stok must be a number!" },
-          ]}
-        >
-          <InputNumber placeholder="Enter stok" />
-        </Form.Item>
+          <Form.Item
+            label="Stok"
+            name="stok"
+            rules={[
+              { required: true, message: "Please enter the stok!" },
+              { pattern: /^\d+$/, message: "Stok must be a number!" },
+            ]}
+          >
+            <InputNumber placeholder="Enter stok"  style={{width:"100%"}}/>
+          </Form.Item>
 
-        <Form.Item>
-          <Button type="primary" htmlType="submit" loading={loading}>
-            Create
-          </Button>
-        </Form.Item>
-      </Form>
-    </div>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" loading={loading}>
+              Create
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
+    </Card>
   );
 };
 

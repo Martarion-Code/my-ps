@@ -3,9 +3,7 @@ import { Content } from "antd/lib/layout/layout";
 import HeaderComponent from '@/components/Layout/Header';
 import SiderWithState from '@/components/Layout/Sidebar';
 
-
-
-const LayoutComponent = ({ children, transformedPermissions }) => {
+const LayoutComponent = ({ children }) => {
   return (
     <Layout style={{ minHeight: '100vh' }} hasSider>
       {/* Include the client-side subcomponent */}
