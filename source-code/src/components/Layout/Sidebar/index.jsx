@@ -1,16 +1,14 @@
 'use client'
-import { Layout, Menu, theme } from 'antd';
+import { Layout, Menu, message, theme } from 'antd';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 import { useState } from 'react';
 import { menus } from '@/configs/menu';
 
 // Subcomponent with client-side logic
 const SiderWithState = ({ transformedPermissions }) => {
   const [collapsed, setCollapsed] = useState(false);
-
-  
-
 
   const collapsedHandler = (value) => {
     setCollapsed(value);
@@ -31,18 +29,31 @@ const { Sider } = Layout;
 const SiderComponent = ({ collapsed, collapsedHandler }) => {
   const router = useRouter();
   const currentPath = router.pathname;
+	const [messageApi, contextHolder] = message.useMessage()
 
   const handleSelectMenu = (menu) => {
+    if(menu?.key === '/logout'){
+      messageApi.open({
+        key: 'logout',
+        type: 'loading',
+        content: 'Logging Out..'
+      })
+      signOut({ callbackUrl: '/' });
+      return;
+    }
     router.push(menu?.key);
   };
 
   return (
+    <>
+    {contextHolder}
     <Sider
       collapsible
       width={250}
       style={{
         backgroundColor: theme.useToken().token.colorBgContainer,
       }}
+      
       collapsed={collapsed}
       onCollapse={collapsedHandler}
     >
@@ -75,5 +86,7 @@ const SiderComponent = ({ collapsed, collapsedHandler }) => {
         onSelect={handleSelectMenu}
       />
     </Sider>
+    
+    </>
   );
 };

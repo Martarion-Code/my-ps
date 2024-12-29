@@ -1,6 +1,7 @@
 import {  Card } from 'antd';
 // import Title from 'antd/es/typography/Title';
 import { Suspense } from 'react';
+import Loading from '../loading';
 import { onDeleteUser } from './actions';
 import { fetchUsers } from './actions';
 import ButtonCreate from '@/components/Button/ButtonCreate';
@@ -32,7 +33,7 @@ export default async function UsersPage({
   ];
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loading />}>
       <Card>
         {/* <Title level={2}>List of Users</Title> */}
        <ButtonCreate ></ButtonCreate>

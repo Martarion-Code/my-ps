@@ -37,10 +37,10 @@ model User {
 
 model Ps {
   id       Int         @id @default(autoincrement()) // Equivalent to SERIAL PRIMARY KEY
-  kategori String      @db.VarChar(255)              // VARCHAR NOT NULL
+  kategori String      @db.VarChar(255)              // VARCHAR NOT NULL      // VARCHAR NOT NULL
+  seri String         @db.VarChar(255)              // VARCHAR NOT NULL      // VARCHAR NOT NULL
   harga    String      @db.VarChar(255)              // VARCHAR NOT NULL
   stok     Int                                      // INTEGER NOT NULL
-
   Transaksi Transaksi[]                              // One-to-many relation with Transaksi
 }
 
@@ -51,10 +51,19 @@ model Transaksi {
   nama_cust     String   @db.VarChar(255)              // VARCHAR NOT NULL
   no_hp         String   @db.VarChar(255)              // VARCHAR NOT NULL
   alamat_cust   String   @db.VarChar(255)              // VARCHAR NOT NULL
-  waktu_pinjam  Int                                   // INTEGER NOT NULL
-  waktu_kembali Int                                   // INTEGER NOT NULL
+  waktu_pinjam  DateTime                                   // INTEGER NOT NULL
+  waktu_kembali DateTime                                   // INTEGER NOT NULL
   harga_total   String   @db.VarChar(255)              // VARCHAR NOT NULL
-  
+  jenis_jaminan   String   @db.VarChar(255)              // VARCHAR NOT NULL
+  jumlah   Int                 // VARCHAR NOT NULL
+  is_approval Boolean? @default(false)
+  is_approve Boolean?
+  is_returned Boolean? 
+  denda String?
+  waktu_dikembalikan DateTime?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
   // Relations
   User   User?   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   Ps     Ps?     @relation(fields: [ps_id], references: [id], onDelete: Cascade)

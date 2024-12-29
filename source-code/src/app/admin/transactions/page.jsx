@@ -1,11 +1,10 @@
 import {  Card } from 'antd';
 // import Title from 'antd/es/typography/Title';
 import { Suspense } from 'react';
+import Loading from '../loading';
 import { onDeleteTransaction } from './actions';
 import { fetchTransactions } from './actions';
-import ButtonCreate from '@/components/Button/ButtonCreate';
-import PaginatedTable from '@/components/Table/PaginatedTable'; // Client Component
-
+import PaginatedTableTransaction from './components/Table/PaginatedTable';
 
 export default async function TransactionsPage({
   searchParams,
@@ -18,44 +17,37 @@ export default async function TransactionsPage({
   });
 
     const columns = [
-    {
-      key: "nama_cust",
-      title: "Nama Customer",
-      dataIndex: "nama_cust",
-    },
-    {
-      key: "no_hp",
-      title: "No HP",
-      dataIndex: "no_hp",
-    },
-    {
-      key: "alamat_cust",
-      title: "Alamat Customer",
-      dataIndex: "alamat_cust",
-    },
-    {
-      key: "waktu_pinjam",
-      title: "Waktu Pinjam",
-      dataIndex: "waktu_pinjam",
-    },
-    {
-      key: "waktu_kembali",
-      title: "Waktu Kembali",
-      dataIndex: "waktu_kembali",
-    },
-    {
-      key: "harga_total",
-      title: "Harga Total",
-      dataIndex: "harga_total",
-    },
-  ];
+      {
+        key: "id",
+        title: "ID",
+        dataIndex: "id",
+        width: 150,
+      },
+      {
+        key: "nama_cust",
+        title: "Nama Customer",
+        dataIndex: "nama_cust",
+        width: 150,
+      },
+      {
+        key: "no_hp",
+        title: "No HP",
+        dataIndex: "no_hp",
+        width: 150,
+      },
+      {
+        key: "alamat_cust",
+        title: "Alamat Customer",
+        dataIndex: "alamat_cust",
+        width: 150,
+      },
+    ];
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loading></Loading>}>
       <Card>
-        {/* <Title level={2}>List of Transactions</Title> */}
-       <ButtonCreate />
-        <PaginatedTable
+       
+        <PaginatedTableTransaction
           columns={columns}
           fetchData={fetchTransactions}
           onDelete={onDeleteTransaction}

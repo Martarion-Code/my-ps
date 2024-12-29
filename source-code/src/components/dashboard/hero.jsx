@@ -33,7 +33,7 @@ export default function Hero() {
     onNextButtonClick,
   } = usePrevNextButtons(emblaApi, onNavButtonClick);
   return (
-    <div class="relative">
+    <div className="relative">
       <div
         className="overflow-hidden relative mt-[66px] bg-gray-200 w-full mx-auto grid grid-flow-col auto-cols-[100vw] gap-4 "
         ref={emblaRef}

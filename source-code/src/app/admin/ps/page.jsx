@@ -1,6 +1,7 @@
 import {  Card } from 'antd';
 // import Title from 'antd/es/typography/Title';
 import { Suspense } from 'react';
+import Loading from '../loading';
 import { fetchPS, onDelete } from './actions'; // Server action
 import ButtonCreate from '@/components/Button/ButtonCreate';
 import PaginatedTable from '@/components/Table/PaginatedTable'; // Client Component
@@ -36,7 +37,7 @@ export default async function PSPage({
   ];
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loading/>}>
       <Card>
         {/* <Title level={2}>List of PS</Title> */}
        <ButtonCreate />

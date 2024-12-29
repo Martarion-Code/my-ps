@@ -1,14 +1,16 @@
 import Image from "next/image";
-import React from "react";
+import InputSearchPS from "@/components//Forms/Input/InputSearchPS";
+import db from "@/lib/db";
 
-export default function IsiBlog() {
+export default async function IsiBlog() {
+  const dataPS = await db.ps.findMany()
   return (
     <>
       <section className="blok mx-auto">
         <div className="">
           <div className="content mx-auto">
             <div className="relative content-top py-24 my-10 mx-32 rounded-2xl bg-[url('/assets/images/bg.png')] bg-cover bg-center">
-            <div className="absolute inset-0 bg-black opacity-50"></div>
+              <div className="absolute inset-0 bg-black opacity-50"></div>
 
               <div className="title relative z-[2] rounded-2xl">
                 <div className="flex justify-center items-center">
@@ -19,61 +21,8 @@ export default function IsiBlog() {
               </div>
               <div className="form flex justify-center items-center relative z-[2]">
                 <div className="bg-white p-6 rounded-md shadow-md inline-block space-y-4">
-                  <form action="" method="post">
-                    {/* <div className="space-x-4 mb-4">
-                      <label className="inline-flex items-center space-x-2">
-                        <input
-                          type="radio"
-                          name="rentalType"
-                          value="delivery"
-                          defaultChecked
-                        />
-                        <span className="text-black">Delivery</span>
-                      </label>
-                      <label className="inline-flex items-center space-x-2">
-                        <input type="radio" name="rentalType" value="pickup" />
-                        <span className="text-black">Pickup</span>
-                      </label>
-                    </div> */}
-                    <div className="grid  gap-4 text-black w-[400px]">
-                      <input
-                        type="text"
-                        placeholder="Kategori Playstation"
-                        className="border p-2 rounded w-full col-span-3"
-                      />
-                      {/* <input
-                        type="text"
-                        placeholder="Harga"
-                        className="border p-2 rounded"
-                      />
-                      <input
-                        type="date"
-                        placeholder="Tanggal Mulai Rental"
-                        className="border p-2 rounded"
-                      />
-                      <input
-                        type="time"
-                        placeholder="Waktu Mulai"
-                        className="border p-2 rounded"
-                      />
-                      <input
-                        type="date"
-                        placeholder="Tanggal Selesai Rental"
-                        className="border p-2 rounded"
-                      />
-                      <input
-                        type="time"
-                        placeholder="Waktu Selesai"
-                        className="border p-2 rounded"
-                      /> */}
-                      <button
-                        type="submit"
-                        className="bg-orange-500 text-white px-4 py-2 rounded col-span-3"
-                      >
-                        Pesan
-                      </button>
-                    </div>
-                  </form>
+
+                <InputSearchPS dataPS={dataPS}/>
                 </div>
               </div>
             </div>

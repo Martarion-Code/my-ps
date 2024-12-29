@@ -87,8 +87,8 @@ const server = http.createServer((req, res) => {
           const isJSON = req.headers['content-type'] === 'application/json';
           const formData = isJSON ? JSON.parse(body) : querystring.parse(body);
 
-            let number = formData.nowa + "@c.us";
-            let message = formData.pesan;
+            const number = formData.nowa + "@c.us";
+            const message = formData.pesan;
             console.log(number)
             // Handle file upload (this is a basic example and does not handle actual file uploads)
             // You would need to implement `file handling logic here to save the uploaded file

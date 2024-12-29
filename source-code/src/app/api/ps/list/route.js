@@ -2,12 +2,14 @@ import { NextResponse } from 'next/server';
 import db from '@/lib/db';
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
-  const kategori = searchParams.get('kategori'); // Extract 'kategori' query parameter
+  const kategori = undefined || searchParams.get('kategori') // Extract 'kategori' query parameter
+  const seri = undefined || searchParams.get('seri') // Extract 'kategori' query parameter
   const page = parseInt(searchParams.get('page') || "1", 10)
   const limit = parseInt(searchParams.get('limit') || "10", 10)
   const skip = (page - 1) * limit
+  console.log("kateegori", !!kategori)
   try {
-    const psData = kategori
+    const psData = !!kategori
       ? await db.ps.findMany({
         skip,
           where: {
@@ -22,6 +24,8 @@ export async function GET(request) {
         skip,
         take:limit,
       });
+
+      console.log(psData)
 
       const total = await db.ps.count()
     return NextResponse.json({data: psData,

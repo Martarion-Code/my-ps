@@ -23,7 +23,7 @@ export default auth(req => {
 
  if (isAccessingAuthRoute) {
   if (isAuth) {
-   return NextResponse.redirect(new URL("/", req.url));
+   return NextResponse.redirect(new URL("/admin", req.url));
   }
 
   return NextResponse.next();

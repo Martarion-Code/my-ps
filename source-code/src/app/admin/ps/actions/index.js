@@ -34,3 +34,56 @@ export async function onDelete(id) {
 
   return deletePs;
 }
+
+
+export async function updatePS(psId, data) {
+  if (!psId) {
+    return { status: 400, message: "PS ID is required" };
+  }
+
+  try {
+    const updatedPS = await db.ps.update({
+      where: {
+        id: parseInt(psId),
+      },
+      data: {
+        kategori: data.kategori,
+        seri:data.seri,
+        harga: data.harga,
+        stok: data.stok,
+      },
+    });
+``
+    return {
+      status: 200,
+      message: "PS updated successfully",
+      data: updatedPS,
+    };
+  } catch (error) {
+    console.error(error);
+    return { status: 500, message: "Error updating PS" };
+  }
+}
+
+
+export async function createPS(data) {
+  try {
+    const newPS = await db.ps.create({
+      data: {
+        kategori: data.kategori,
+        seri: data.seri,
+        harga: data.harga,
+        stok: data.stok,
+      },
+    });
+
+    return {
+      status: 201,
+      message: "PS created successfully",
+      data: newPS,
+    };
+  } catch (error) {
+    console.error(error);
+    return { status: 500, message: "Error creating PS" };
+  }
+}

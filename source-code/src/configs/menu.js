@@ -1,4 +1,4 @@
-import { AppstoreOutlined,  } from '@ant-design/icons'
+import { AppstoreOutlined  } from '@ant-design/icons'
 
 export const menus = [
   {
@@ -37,4 +37,13 @@ export const menus = [
     }
   },
 
+  {
+    key: '/logout',
+    label: 'Logout',
+    // icon: <AppstoreOutlined />,
+    // permission_code:"read_item",
+    style: {
+      fontWeight: 'normal'
+    }
+  },
 ]

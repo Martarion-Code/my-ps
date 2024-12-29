@@ -1,8 +1,9 @@
 'use client'
 import { KeyOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons'
 import { Avatar, Card, Col, Layout, Popover, Row, Space, message, theme } from 'antd'
-// import axios from 'axios'
 import { useRouter } from 'next/navigation'
+import { signOut } from 'next-auth/react'
+// import axios from 'axios'
 import { useEffect, useState } from 'react'
 // import { modalError } from '@/utils/modalError'
 const { Header } = Layout
@@ -58,6 +59,11 @@ const HeaderComponent = () => {
 			type: 'loading',
 			content: 'Logging Out..'
 		})
+
+		const baseHost = window.location.origin;
+		signOut({ callbackUrl: `${baseHost}` })
+
+
 		// axios.request({ method: 'POST', url: '/api/auth/logout' }).then(async (res) => {
 		// 	messageApi.open({
 		// 		key: 'logout',
@@ -103,7 +109,7 @@ const HeaderComponent = () => {
 					/>
 					<p style={{ fontSize: '18px', fontWeight: 700 }}>{userData?.full_name}</p>
 				</Col>
-				<Col
+				{/* <Col
 					span={24}
 					style={{
 						display: 'flex',
@@ -121,7 +127,7 @@ const HeaderComponent = () => {
 						/>
 						<BarCard icon={<LogoutOutlined style={{ fontSize: '18px' }} />} route="Sign Out" routeName="Sign Out" />
 					</Space>
-				</Col>
+				</Col> */}
 			</Row>
 		</>
 	)
