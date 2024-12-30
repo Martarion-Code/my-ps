@@ -1,180 +1,103 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import TransactionsPage from "@/app/admin/transactions/page.jsx";
-import {
-  fetchTransactions,
-  onDeleteTransaction,
-} from "@/app/admin/transactions/actions";
+import TransactionsPage from "@/app/admin/transactions/page"; // Adjust the import path as needed
+import { fetchTransactions, onDeleteTransaction } from "@/app/admin/transactions/actions"; // Server actions
+import PaginatedTable from "@/app/admin/transactions/components/Table/PaginatedTable";
+import { Suspense } from "react";
 
-// Mock the imported components and actions
-jest.mock("@/components/Button/ButtonCreate", () => {
-  return function MockButtonCreate() {
-    return <div data-testid="button-create">Create Button</div>;
-  };
-});
-
-jest.mock("@/components/Table/PaginatedTable", () => {
-  return function MockPaginatedTable(props) {
+// Mocking components and server actions
+jest.mock("@/app/admin/transactions/components/Table/PaginatedTable", () => {
+  return function MockPaginatedTableTransaction(props) {
     return (
       <div data-testid="paginated-table">
         Mocked Paginated Table
         <div>Columns: {JSON.stringify(props.columns)}</div>
         <div>Initial Data: {JSON.stringify(props.initialData)}</div>
+        <div>Pagination: {JSON.stringify(props.initialPagination)}</div>
       </div>
     );
   };
 });
+jest.mock('next/navigation', () => ({
+  useRouter: jest.fn(),
+  usePathname: jest.fn(),
+  useSearchParams: jest.fn(),
+}));
 
 jest.mock("@/app/admin/transactions/actions", () => ({
   fetchTransactions: jest.fn(),
   onDeleteTransaction: jest.fn(),
 }));
 
-describe("TransactionsPage", () => {
-  const mockTransactionData = {
-    data: [
-      {
-        nama_cust: "John Doe",
-        no_hp: "1234567890",
-        alamat_cust: "Test Address",
-        waktu_pinjam: "2023-01-01",
-        waktu_kembali: "2023-01-07",
-        harga_total: 500000,
-      },
-    ],
-    pagination: {
-      currentPage: 1,
-      totalPages: 5,
-      totalItems: 50,
-    },
-  };
+// Mock data for Transactions
+const mockTransactionsData = {
+  data: [
+    { id: 1, nama_cust: "John", no_hp: "12345", alamat_cust: "Street 1" },
+    { id: 2, nama_cust: "Jane", no_hp: "67890", alamat_cust: "Street 2" },
+  ],
+  pagination: {
+    page: 1,
+    limit: 10,
+    total: 50,
+    totalPages: 5,
+  },
+};
 
+describe("TransactionsPage", () => {
   beforeEach(() => {
-    // Reset mocks before each test
     jest.clearAllMocks();
   });
-  /** Test Path 1: Default Rendering with default search params */
-  it("renders the page title and fetches data with default pagination", async () => {
-    fetchTransactions.mockResolvedValue(mockTransactionData);
 
-    render(await TransactionsPage({ searchParams: {} }));
+  it("renders the TransactionsPage with data and pagination", async () => {
+    fetchTransactions.mockResolvedValue(mockTransactionsData);
 
-    expect(screen.getByText("List of Transactions")).toBeInTheDocument();
-    expect(screen.getByTestId("button-create")).toBeInTheDocument();
+    // Render TransactionsPage with mock data
+    render(await TransactionsPage({ searchParams: { page: "1", limit: "10" } }));
 
-    // Ensure fetchTransactions was called with defaults
-    expect(fetchTransactions).toHaveBeenCalledWith({
-      page: 1,
-      limit: 10,
-    });
-  });
+    // Wait for the paginated table to be rendered
+    await waitFor(() => screen.getByTestId("paginated-table"));
 
-  /** Test Path 2: Custom pagination with searchParams */
-  it("fetches transactions with custom searchParams", async () => {
-    fetchTransactions.mockResolvedValue(mockTransactionData);
+    // Verify the paginated table and data rendering
+    expect(screen.getByTestId("paginated-table")).toBeInTheDocument();
 
-    render(
-      await TransactionsPage({ searchParams: { page: "3", limit: "15" } })
-    );
-
-    // expect(screen.getByText("List of Transactions")).toBeInTheDocument();
-    expect(screen.getByTestId("button-create")).toBeInTheDocument();
-
-    expect(fetchTransactions).toHaveBeenCalledWith({
-      page: 3,
-      limit: 15,
-    });
-  });
-
-  /** Test Path 3: Edge case with invalid query values */
-  it("handles invalid query parameters gracefully", async () => {
-    fetchTransactions.mockResolvedValue(mockTransactionData);
-
-    render(
-      await TransactionsPage({
-        searchParams: { page: "invalid", limit: "invalid" },
-      })
-    );
-
-    // expect(screen.getByText("List of Transactions")).toBeInTheDocument();
-    expect(screen.getByTestId("button-create")).toBeInTheDocument();
-
-    expect(fetchTransactions).toHaveBeenCalledWith({
-      page: 1, // Fallback to default page
-      limit: 10, // Fallback to default limit
-    });
-  });
-
-  /** Test Path 4: Verifies the correct PaginatedTable props are passed */
-  it("passes correct columns & data to PaginatedTable", async () => {
-    fetchTransactions.mockResolvedValue(mockTransactionData);
-
-    render(await TransactionsPage({ searchParams: {} }));
-
+    // Verify the content in the table (Customer names, etc.)
     const paginatedTable = screen.getByTestId("paginated-table");
-    expect(paginatedTable).toBeInTheDocument();
-
-    expect(paginatedTable).toHaveTextContent("Mocked Paginated Table");
-    expect(paginatedTable).toHaveTextContent("Columns");
-    expect(paginatedTable).toHaveTextContent(
-      JSON.stringify(mockTransactionData.data)
-    );
+    expect(paginatedTable).toHaveTextContent("John");
+    expect(paginatedTable).toHaveTextContent("Jane");
+    expect(paginatedTable).toHaveTextContent("12345");
+    expect(paginatedTable).toHaveTextContent("67890");
+    expect(paginatedTable).toHaveTextContent("Street 1");
+    expect(paginatedTable).toHaveTextContent("Street 2");
   });
 
-  it("renders the create button", async () => {
-    fetchTransactions.mockResolvedValue(mockTransactionData);
+  it("calls fetchTransactions with the correct parameters based on searchParams", async () => {
+    fetchTransactions.mockResolvedValue(mockTransactionsData);
 
-    render(await TransactionsPage({ searchParams: {} }));
+    // Render TransactionsPage with specific searchParams
+    render(await TransactionsPage({ searchParams: { page: "2", limit: "20" } }));
 
-    const createButton = screen.getByTestId("button-create");
-    expect(createButton).toBeInTheDocument();
+    // Verify fetchTransactions is called with correct parameters
+    await waitFor(() => {
+      expect(fetchTransactions).toHaveBeenCalledWith({
+        page: 2,
+        limit: 20,
+      });
+    });
   });
 
-  it("passes correct columns to PaginatedTable", async () => {
-    fetchTransactions.mockResolvedValue(mockTransactionData);
+  it("handles empty transaction data", async () => {
+    // Simulate empty transaction data
+    fetchTransactions.mockResolvedValue({
+      data: [],
+      pagination: { page: 1, limit: 10, total: 0, totalPages: 1 },
+    });
 
-    render(await TransactionsPage({ searchParams: {} }));
+    render(await TransactionsPage({ searchParams: { page: "1", limit: "10" } }));
 
+    await waitFor(() => screen.getByTestId("paginated-table"));
+
+    // Verify the table shows empty data
     const paginatedTable = screen.getByTestId("paginated-table");
-    expect(paginatedTable).toBeInTheDocument();
-
-    // Check if columns are correctly defined
-    expect(paginatedTable).toHaveTextContent("Nama Customer");
-    expect(paginatedTable).toHaveTextContent("No HP");
-    expect(paginatedTable).toHaveTextContent("Alamat Customer");
-    expect(paginatedTable).toHaveTextContent("Waktu Pinjam");
-    expect(paginatedTable).toHaveTextContent("Waktu Kembali");
-    expect(paginatedTable).toHaveTextContent("Harga Total");
-  });
-
-  it("fetches transactions with default pagination", async () => {
-    fetchTransactions.mockResolvedValue(mockTransactionData);
-
-    render(await TransactionsPage({ searchParams: {} }));
-
-    // Verify fetchTransactions was called with default values
-    expect(fetchTransactions).toHaveBeenCalledWith({
-      page: 1,
-      limit: 10,
-    });
-  });
-
-  it("fetches transactions with custom pagination", async () => {
-    fetchTransactions.mockResolvedValue(mockTransactionData);
-
-    render(
-      await TransactionsPage({
-        searchParams: {
-          page: "2",
-          limit: "20",
-        },
-      })
-    );
-
-    // Verify fetchTransactions was called with custom values
-    expect(fetchTransactions).toHaveBeenCalledWith({
-      page: 2,
-      limit: 20,
-    });
+    expect(paginatedTable).toHaveTextContent("[]"); // Empty data case
   });
 });

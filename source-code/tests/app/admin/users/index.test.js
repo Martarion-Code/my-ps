@@ -48,15 +48,6 @@ describe("UsersPage", () => {
     jest.clearAllMocks();
   });
 
-  it("renders the page title correctly", async () => {
-    // Mock the fetchUsers to return data
-    fetchUsers.mockResolvedValue(mockUserData);
-
-    render(await UsersPage({ searchParams: {} }));
-
-    const pageTitle = screen.getByText("List of Users");
-    expect(pageTitle).toBeInTheDocument();
-  });
 
   it("renders the create button", async () => {
     fetchUsers.mockResolvedValue(mockUserData);

@@ -3,8 +3,8 @@ import {  Card } from 'antd';
 import { Suspense } from 'react';
 import Loading from '../loading';
 import { fetchPS, onDelete } from './actions'; // Server action
+import PaginatedTable from '@/app/admin/ps/components/PaginatedTable'; // Client Component
 import ButtonCreate from '@/components/Button/ButtonCreate';
-import PaginatedTable from '@/components/Table/PaginatedTable'; // Client Component
 
 
 export default async function PSPage({
@@ -22,6 +22,11 @@ export default async function PSPage({
       key: "kategori",
       title: "Kategori",
       dataIndex: "kategori",
+    },
+    {
+      key: "seri",
+      title: "Seri",
+      dataIndex: "seri",
     },
     {
       key: "harga",

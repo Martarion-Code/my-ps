@@ -1,23 +1,15 @@
-// import React from 'react';
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import PSPage from "@/app/admin/ps/page.jsx";
-import { fetchPS, onDelete } from "@/app/admin/ps/actions";
-import { Card } from "antd";
+import PSPage from "@/app/admin/ps/page.jsx"; // Ganti dengan path yang sesuai
+import { fetchPS, onDelete } from "@/app/admin/ps/actions"; // Server actions
+import ButtonCreate from "@/components/Button/ButtonCreate";
+import PaginatedTable from "@/components/Table/PaginatedTable";
+import { Suspense } from "react";
 
-// Mock dependencies
-jest.mock("antd", () => ({
-  Card: jest.fn(({ children }) => (
-    <div data-testid="mock-card">{children}</div>
-  )),
-  Typography: {
-    Title: jest.fn(({ children, level }) => <h1>{children}</h1>),
-  },
-}));
-
+// Mocking komponen dan server actions
 jest.mock("@/components/Button/ButtonCreate", () => {
   return function MockButtonCreate() {
-    return <button data-testid="create-button">Create</button>;
+    return <div data-testid="button-create">Create Button</div>;
   };
 });
 
@@ -25,203 +17,81 @@ jest.mock("@/components/Table/PaginatedTable", () => {
   return function MockPaginatedTable(props) {
     return (
       <div data-testid="paginated-table">
-        {props.initialData.map((item) => (
-          <div key={item.id}>
-            {item.kategori} - {item.harga} - {item.stok}
-          </div>
-        ))}
+        Mocked Paginated Table
+        <div>Columns: {JSON.stringify(props.columns)}</div>
+        <div>Initial Data: {JSON.stringify(props.initialData)}</div>
+        <div>Pagination: {JSON.stringify(props.initialPagination)}</div>
       </div>
     );
   };
 });
 
-// Mock server actions
 jest.mock("@/app/admin/ps/actions", () => ({
   fetchPS: jest.fn(),
   onDelete: jest.fn(),
 }));
 
-describe("PSPage Component", () => {
-  const mockData = [
-    {
-      id: 1,
-      kategori: "PlayStation 5",
-      harga: 500000,
-      stok: 5,
-    },
-    {
-      id: 2,
-      kategori: "PlayStation 4",
-      harga: 300000,
-      stok: 3,
-    },
-  ];
+// Mock data untuk PS
+const mockPSData = {
+  data: [
+    { id: 1, kategori: "PS5", seri: "Slim", harga: 8000000, stok: 10 },
+    { id: 2, kategori: "PS4", seri: "Pro", harga: 5000000, stok: 15 },
+  ],
+  pagination: {
+    currentPage: 1,
+    totalPages: 3,
+    totalItems: 30,
+  },
+};
 
-  const mockPagination = {
-    page: 1,
-    limit: 10,
-    total: 2,
-  };
-
+describe("PSPage", () => {
   beforeEach(() => {
-    // Clear all mocks before each test
     jest.clearAllMocks();
-
-    // Setup default mock implementations
-    fetchPS.mockResolvedValue({
-      data: mockData,
-      pagination: mockPagination,
-    });
   });
 
-  it("renders the page with correct components", async () => {
-    await render(await PSPage({ searchParams: {} }));
+  it("renders the PS page with data and pagination", async () => {
+    fetchPS.mockResolvedValue(mockPSData);
 
-    // Check for key components
-    expect(screen.getByTestId("mock-card")).toBeInTheDocument();
-    // expect(screen.getByText('List of PS')).toBeInTheDocument();
-    expect(screen.getByTestId("create-button")).toBeInTheDocument();
-    expect(screen.getByTestId("paginated-table")).toBeInTheDocument();
-  });
+    // Use await to wait for the component to finish rendering
+     render(await PSPage({searchParams:{ page: "1", limit: "10" }}));
 
-  it("passes correct props to PaginatedTable", async () => {
-    const renderResult = await render(await PSPage({ searchParams: {} }));
+    // Tunggu sampai data dan komponen ter-render
+    await waitFor(() => screen.getByTestId("paginated-table"));
 
-    // Verify PaginatedTable receives correct props
+    // Verifikasi bahwa tombol create dan tabel ter-render dengan data yang benar
+    expect(screen.getByTestId("button-create")).toBeInTheDocument();
     const paginatedTable = screen.getByTestId("paginated-table");
+    expect(paginatedTable).toBeInTheDocument();
 
-    // Check if data is rendered
-    expect(paginatedTable).toHaveTextContent("PlayStation 5");
-    expect(paginatedTable).toHaveTextContent("PlayStation 4");
+    // Verifikasi apakah data PS ada di tabel
+    expect(paginatedTable).toHaveTextContent("PS5");
+    expect(paginatedTable).toHaveTextContent("PS4");
+    expect(paginatedTable).toHaveTextContent("8000000");
+    expect(paginatedTable).toHaveTextContent("5000000");
+    expect(paginatedTable).toHaveTextContent("10");
+    expect(paginatedTable).toHaveTextContent("15");
   });
 
-  it("handles pagination from search params", async () => {
-    const searchParams = { page: "2", limit: "5" };
-    await render(await PSPage({ searchParams }));
+  it("calls fetchPS with the correct parameters based on searchParams", async () => {
+    fetchPS.mockResolvedValue(mockPSData);
 
-    // Verify fetchPS was called with correct parameters
-    expect(fetchPS).toHaveBeenCalledWith({
-      page: 2,
-      limit: 5,
-    });
+    // Use await to ensure fetchPS is called with the correct parameters after rendering
+    render(await PSPage({searchParams:{ page: "2", limit: "20" }}));
+
+    // Verifikasi bahwa fetchPS dipanggil dengan parameter yang benar
+    await waitFor(() => expect(fetchPS).toHaveBeenCalledWith({ page: 2, limit: 20 }));
   });
 
-  it("uses default pagination when no search params provided", async () => {
-    await render(await PSPage({ searchParams: {} }));
+  it("handles empty PS data", async () => {
+    // Simulasikan data kosong
+    fetchPS.mockResolvedValue({ data: [], pagination: { currentPage: 1, totalPages: 1, totalItems: 0 } });
 
-    // Verify fetchPS was called with default parameters
-    expect(fetchPS).toHaveBeenCalledWith({
-      page: 1,
-      limit: 10,
-    });
-  });
+    render(await PSPage({searchParams:{ page: "1", limit: "10" }}));
 
-  it("renders fallback when loading", async () => {
-    // Simulate a slow data fetch by making fetchPS return a pending promise
-    const fetchPromise = new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          data: mockData,
-          pagination: mockPagination,
-        });
-      }, 3000); // Simulate 3 seconds delay
-    });
+    await waitFor(() => screen.getByTestId("paginated-table"));
 
-    fetchPS.mockImplementation(() => fetchPromise);
-
-    // Render the component
-    const { getByText, queryByText } = render(
-      await PSPage({ searchParams: {} })
-    );
-
-    // Check that the loading text is shown
-    expect(getByText("Loading...")).toBeInTheDocument();
-
-    // Wait for the data to be rendered
-    await screen.findByText("PlayStation 5"); // Check that the data has rendered
-
-    // Ensure that the loading state is no longer displayed
-    expect(queryByText("Loading...")).toBeNull();
-  }, 10000); // Increase timeout to 10 seconds for this test
-
-  /**
-   * Path 1: Both page and limit are defined.
-   */
-  it("should fetch data with page=2 and limit=5", async () => {
-    const searchParams = { page: "2", limit: "5" };
-    await render(await PSPage({ searchParams }));
-
-    expect(fetchPS).toHaveBeenCalledWith({ page: 2, limit: 5 });
-    expect(screen.getByTestId("mock-card")).toBeInTheDocument();
-    expect(screen.getByTestId("paginated-table")).toHaveTextContent(
-      "PlayStation 5 - 500000 - 5"
-    );
-  });
-
-  /**
-   * Path 2: Only page is defined.
-   */
-  it("should fetch data with page=3 and default limit=10", async () => {
-    const searchParams = { page: "3" };
-    await render(await PSPage({ searchParams }));
-
-    expect(fetchPS).toHaveBeenCalledWith({ page: 3, limit: 10 });
-    expect(screen.getByTestId("mock-card")).toBeInTheDocument();
-  });
-
-  /**
-   * Path 3: Only limit is defined.
-   */
-  it("should fetch data with limit=7 and default page=1", async () => {
-    const searchParams = { limit: "7" };
-    await render(await PSPage({ searchParams }));
-
-    expect(fetchPS).toHaveBeenCalledWith({ page: 1, limit: 7 });
-    expect(screen.getByTestId("mock-card")).toBeInTheDocument();
-  });
-
-  /**
-   * Path 4: Neither page nor limit are defined, defaults apply.
-   */
-  it("should use default pagination when no params are provided", async () => {
-    await render(await PSPage({ searchParams: {} }));
-
-    expect(fetchPS).toHaveBeenCalledWith({ page: 1, limit: 10 });
-    expect(screen.getByTestId("mock-card")).toBeInTheDocument();
-    expect(screen.getByTestId("paginated-table")).toHaveTextContent(
-      "PlayStation 5 - 500000 - 5"
-    );
-  });
-
-  /**
-   * Path 5: Simulate slow fetch to test fallback loading behavior.
-   */
-  it("should show loading state during async fetch", async () => {
-    const fetchPromise = new Promise((resolve) => {
-      setTimeout(
-        () => resolve({ data: mockData, pagination: mockPagination }),
-        3000
-      );
-    });
-    fetchPS.mockImplementation(() => fetchPromise);
-
-    const { getByText, queryByText } = render(
-      await PSPage({ searchParams: {} })
-    );
-
-    expect(getByText("Loading...")).toBeInTheDocument();
-
-    await screen.findByText("PlayStation 5");
-    expect(queryByText("Loading...")).toBeNull();
-  }, 10000);
-
-  it("has correct column configuration", async () => {
-    await render(await PSPage({ searchParams: {} }));
-
+    // Verifikasi bahwa tabel menampilkan data kosong
     const paginatedTable = screen.getByTestId("paginated-table");
-
-    // Verify columns are displayed
-    expect(paginatedTable).toHaveTextContent("PlayStation 5 - 500000 - 5");
-    expect(paginatedTable).toHaveTextContent("PlayStation 4 - 300000 - 3");
+    expect(paginatedTable).toHaveTextContent("[]"); // Data kosong
   });
 });

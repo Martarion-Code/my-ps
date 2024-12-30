@@ -4,7 +4,6 @@ import { Suspense } from 'react';
 import Loading from '../loading';
 import { onDeleteUser } from './actions';
 import { fetchUsers } from './actions';
-import ButtonCreate from '@/components/Button/ButtonCreate';
 import PaginatedTable from '@/components/Table/PaginatedTable'; // Client Component
 
 
@@ -36,7 +35,6 @@ export default async function UsersPage({
     <Suspense fallback={<Loading />}>
       <Card>
         {/* <Title level={2}>List of Users</Title> */}
-       <ButtonCreate ></ButtonCreate>
         <PaginatedTable
           columns={columns}
           fetchData={fetchUsers}
