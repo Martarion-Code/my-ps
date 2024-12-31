@@ -390,7 +390,7 @@ export async function updateTransaction(transactionId, data) {
 export async function searchTransactions({ search, status, date }) {
   try {
     // console.log("search", search);
-    // console.log("status", status);
+    console.log("status", status);
     // console.log("date", date);
     const [startDate, endDate] = date ? date.map((d) => new Date(d)) : [];
     const transactions = await db.transaksi.findMany({
@@ -401,7 +401,7 @@ export async function searchTransactions({ search, status, date }) {
           { no_hp: { contains: search, mode: "insensitive" } },
         ],
         AND: [
-          { is_approve: status == true ? true : false },
+          { is_approve: status ? status : status == false ? false : undefined},
           {
             createdAt: {
               gte: startDate ? new Date(startDate) : undefined,
@@ -419,7 +419,7 @@ export async function searchTransactions({ search, status, date }) {
           { no_hp: { contains: search, mode: "insensitive" } },
         ],
         AND: [
-          { is_approve: status == true ? true : false },
+          { is_approve: status ? status : status == false ? false : undefined},
           {
             createdAt: {
               gte: startDate ? new Date(startDate) : undefined,
