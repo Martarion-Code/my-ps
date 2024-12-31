@@ -29,10 +29,10 @@ const { Sider } = Layout;
 const SiderComponent = ({ collapsed, collapsedHandler }) => {
   const router = useRouter();
   const currentPath = router.pathname;
-	const [messageApi, contextHolder] = message.useMessage()
+  const [messageApi, contextHolder] = message.useMessage()
 
   const handleSelectMenu = (menu) => {
-    if(menu?.key === '/logout'){
+    if (menu?.key === '/logout') {
       messageApi.open({
         key: 'logout',
         type: 'loading',
@@ -46,29 +46,36 @@ const SiderComponent = ({ collapsed, collapsedHandler }) => {
 
   return (
     <>
-    {contextHolder}
-    <Sider
-      collapsible
-      width={250}
-      style={{
-        backgroundColor: theme.useToken().token.colorBgContainer,
-      }}
-      
-      collapsed={collapsed}
-      onCollapse={collapsedHandler}
-    >
-      <div
+      {contextHolder}
+      <Sider
+        collapsible
+        width={250}
         style={{
-          height: collapsed ? 100 : 30,
-          margin: 16,
-          background: theme.useToken().token.colorBgContainer,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
+          backgroundColor: theme.useToken().token.colorBgContainer,
         }}
+
+        collapsed={collapsed}
+        onCollapse={collapsedHandler}
       >
-        <Image
-          src="/assets/smt-logo.png"
+        <div
+          style={{
+            height: collapsed ? 100 : 30,
+            margin: 16,
+            background: theme.useToken().token.colorBgContainer,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+
+          <Image
+            src="/assets/images/logo.png"
+            alt="Logo" // Tambahkan alt untuk aksesibilitas
+            width={150} // Tentukan lebar gambar
+            height={50} // Tentukan tinggi gambar
+          />
+          {/* <Image
+          src="/assets"
           width={102.4}
           height={30}
           alt="logo"
@@ -76,17 +83,17 @@ const SiderComponent = ({ collapsed, collapsedHandler }) => {
             transform: collapsed ? 'rotate(-90deg)' : 'rotate(0deg)',
             transition: 'transform 0.2s ease',
           }}
+        /> */}
+        </div>
+        <Menu
+          theme="light"
+          defaultSelectedKeys={[currentPath]}
+          mode="inline"
+          items={menus}
+          onSelect={handleSelectMenu}
         />
-      </div>
-      <Menu
-        theme="light"
-        defaultSelectedKeys={[currentPath]}
-        mode="inline"
-        items={menus}
-        onSelect={handleSelectMenu}
-      />
-    </Sider>
-    
+      </Sider>
+
     </>
   );
 };
