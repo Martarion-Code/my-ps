@@ -25,7 +25,7 @@ const TransactionDetail = ({ transaction }) => {
           <Descriptions.Item label="ID">{transaction.Ps.id}</Descriptions.Item>
           <Descriptions.Item label="Nama">{transaction.Ps.nama}</Descriptions.Item>
           <Descriptions.Item label="Harga">{transaction.Ps.harga}</Descriptions.Item>
-          <Descriptions.Item label="Stok">{transaction.Ps.stok}</Descriptions.Item>
+          <Descriptions.Item label="Stok">{transaction.jumlah}</Descriptions.Item>
         </Descriptions>
       </Card>
     </Card>

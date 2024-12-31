@@ -93,11 +93,7 @@ const SearchTransactions = ({ onSearch }) => {
                   {
                     label: "Ditolak",
                     value: false,
-                  },
-                  {
-                    label: "Belum Ditentukan",
-                    value: "pending",
-                  },
+                  }
                 ]}
                 size="medium"
                 prefix={<SearchOutlined />}

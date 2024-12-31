@@ -34,6 +34,7 @@ const CreatePsPage = () => {
     <Card>
       <div style={{ maxWidth: 400, padding: "20px" }}>
         {/* <Title level={2}>Create PS</Title> */}
+        <ContentTitle title="Create PS" showBack={true} />
         <Form
           form={form}
           layout="vertical"

@@ -13,7 +13,7 @@ export async function POST(request) {
     }
 
     const newPs = await db.ps.create({
-      data: { kategori, seri, harga, stok },
+      data: { kategori, seri, harga, stok: parseInt(stok) },
     });
 
     return NextResponse.json(newPs, { status: 201 });

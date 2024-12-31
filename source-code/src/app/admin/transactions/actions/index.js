@@ -401,7 +401,7 @@ export async function searchTransactions({ search, status, date }) {
           { no_hp: { contains: search, mode: "insensitive" } },
         ],
         AND: [
-          { is_approve: typeof status === "boolean" ? status : undefined },
+          { is_approve: status == true ? true : false },
           {
             createdAt: {
               gte: startDate ? new Date(startDate) : undefined,
@@ -419,7 +419,7 @@ export async function searchTransactions({ search, status, date }) {
           { no_hp: { contains: search, mode: "insensitive" } },
         ],
         AND: [
-          { is_approve: typeof status === "boolean" ? status : undefined },
+          { is_approve: status == true ? true : false },
           {
             createdAt: {
               gte: startDate ? new Date(startDate) : undefined,
