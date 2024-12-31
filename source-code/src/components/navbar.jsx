@@ -85,49 +85,9 @@ export default function NavBar({ children }) {
                       ></path>
                     </svg>
                   </a>
-                  <ul className="hidden mt-2 space-y-2 bg-white text-gray-800 rounded shadow-lg md:absolute md:left-0 w-full md:w-48">
-                    <li>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 hover:bg-gray-100 transition duration-200"
-                      >
-                        Electronics
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 hover:bg-gray-100 transition duration-200"
-                      >
-                        Clothing
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 hover:bg-gray-100 transition duration-200"
-                      >
-                        Home & Garden
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 hover:bg-gray-100 transition duration-200"
-                      >
-                        Sports & Outdoors
-                      </a>
-                    </li>
-                  </ul>
+                
                 </li>
-                <li>
-                  <a
-                    href="#"
-                    className="block py-2 md:py-0 hover:text-gray-500 transition duration-200"
-                  >
-                    Pesanan
-                  </a>
-                </li>
+             
                 {/* <li>
                   <a
                     href="#"
