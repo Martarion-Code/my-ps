@@ -63,7 +63,7 @@ const SearchTransactions = ({ onSearch }) => {
             />
           </Form.Item>
         </Col>
-        <Col
+        {/* <Col
           {...{
             xxl: 6,
             xl: 6,
@@ -133,7 +133,7 @@ const SearchTransactions = ({ onSearch }) => {
             />
           </Form.Item>
           {/* <Button></Button>  */}
-        </Col>
+        {/* </Col> */} 
       </Row>
     </Form>
   );
