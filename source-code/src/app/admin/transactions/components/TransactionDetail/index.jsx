@@ -7,7 +7,12 @@ const TransactionDetail = ({ transaction }) => {
   if (!transaction) {
     return <p>Transaction not found</p>;
   }
-
+  const formatPrice = (price, currency = 'Rp') => {
+    if (typeof price !== 'number') {
+      return 'Invalid price';
+    }
+    return `${currency} ${price.toLocaleString('id-ID')}`;
+  };
   return (
     <Card style={{ margin: "20px" }}>
       <ContentTitle title="Transaction Details" showBack={true} />
@@ -31,10 +36,10 @@ const TransactionDetail = ({ transaction }) => {
             : "-"}
         </Descriptions.Item>
         <Descriptions.Item label="Denda">
-          {transaction.denda || 0}
+          {formatPrice({price:transaction.denda || 0})}
         </Descriptions.Item>
         <Descriptions.Item label="Harga Total">
-          {transaction.harga_total + (transaction.denda || 0)}
+          { formatPrice({price:transaction.harga_total || 0})}
         </Descriptions.Item>
         <Descriptions.Item label="Jenis Jaminan">
           {transaction.jenis_jaminan}
