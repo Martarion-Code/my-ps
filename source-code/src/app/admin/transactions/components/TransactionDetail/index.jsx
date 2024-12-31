@@ -36,10 +36,10 @@ const TransactionDetail = ({ transaction }) => {
             : "-"}
         </Descriptions.Item>
         <Descriptions.Item label="Denda">
-          {formatPrice({price:transaction.denda || 0})}
+          {formatPrice(transaction.denda || 0)}
         </Descriptions.Item>
         <Descriptions.Item label="Harga Total">
-          { formatPrice({price:transaction.harga_total || 0})}
+          { formatPrice(transaction.harga_total || 0)}
         </Descriptions.Item>
         <Descriptions.Item label="Jenis Jaminan">
           {transaction.jenis_jaminan}
