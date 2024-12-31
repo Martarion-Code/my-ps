@@ -47,7 +47,13 @@ const CreatePsPage = () => {
           >
             <Input placeholder="Enter kategori" />
           </Form.Item>
-
+          <Form.Item
+            label="Seri"
+            name="seri"
+            rules={[{ required: true, message: "Please enter the Seri!" }]}
+          >
+            <Input placeholder="Enter seri" />
+          </Form.Item>
           <Form.Item
             label="Harga"
             name="harga"
