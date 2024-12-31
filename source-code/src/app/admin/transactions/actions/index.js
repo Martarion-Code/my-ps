@@ -149,7 +149,7 @@ export async function createTransaction(data) {
 
     //Send the invoice message via the API
     const response = await fetch(
-      `https://7723-182-2-39-11.ngrok-free.app/chat/sendmessage/${no_hp}`,
+      `https://58f7-182-2-39-11.ngrok-free.app/chat/sendmessage/${no_hp}`,
       {
         method: "POST",
         headers: {
