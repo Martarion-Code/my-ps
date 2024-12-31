@@ -2,7 +2,7 @@ import { AppstoreOutlined  } from '@ant-design/icons'
 
 export const menus = [
   {
-    key: '/admin/dashboard',
+    key: '/admin',
     label: 'Dashboard',                                                                                                                                                                                                                                                                        
     icon: <AppstoreOutlined />,
     style: {
