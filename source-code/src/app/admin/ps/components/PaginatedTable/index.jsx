@@ -26,7 +26,13 @@ export default function PaginatedTable({
   const handleUpdate = async (id) => {
     router.push(`/update/${id}`)
   };
+  const formatPrice = (price, currency = 'Rp') => {
 
+    if (typeof price !== 'number') {
+      return 'Invalid price';
+    }
+    return `${currency} ${price.toLocaleString('id-ID')}`;
+  };
   // Modify columns to include delete action if onDelete is provided
   const enhancedColumns = onDelete
     ? [
