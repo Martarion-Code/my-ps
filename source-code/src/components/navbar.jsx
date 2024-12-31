@@ -58,7 +58,7 @@ export default function NavBar({ children }) {
               <ul className="pt-16 md:pt-0 px-4 md:px-0 md:flex space-y-2 md:space-y-0 md:space-x-4">
                 <li>
                   <a
-                    href="#"
+                    href="/"
                     className="block py-2 md:py-0 hover:text-gray-500 transition duration-200"
                   >
                     Home

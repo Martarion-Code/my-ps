@@ -54,7 +54,7 @@ const TransactionDetail = ({ transaction }) => {
             {transaction.Ps.harga}
           </Descriptions.Item>
           <Descriptions.Item label="Stok">
-            {transaction.Ps.stok}
+            {transaction.jumlah}
           </Descriptions.Item>
         </Descriptions>
       </Card>
