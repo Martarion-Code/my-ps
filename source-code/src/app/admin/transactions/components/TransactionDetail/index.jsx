@@ -8,6 +8,7 @@ const TransactionDetail = ({ transaction }) => {
     return <p>Transaction not found</p>;
   }
   const formatPrice = (price, currency = 'Rp') => {
+
     if (typeof price !== 'number') {
       return 'Invalid price';
     }
@@ -36,10 +37,10 @@ const TransactionDetail = ({ transaction }) => {
             : "-"}
         </Descriptions.Item>
         <Descriptions.Item label="Denda">
-          {formatPrice(transaction.denda || 0)}
+          {formatPrice(parseInt(transaction.denda)|| 0)}
         </Descriptions.Item>
         <Descriptions.Item label="Harga Total">
-          { formatPrice(transaction.harga_total || 0)}
+          { formatPrice(parseInt(transaction.harga_total) || 0)}
         </Descriptions.Item>
         <Descriptions.Item label="Jenis Jaminan">
           {transaction.jenis_jaminan}
