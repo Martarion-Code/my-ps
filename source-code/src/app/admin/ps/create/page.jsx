@@ -2,6 +2,7 @@
 import { Form, Input, Button, message, InputNumber, Card } from "antd";
 // import Title from "antd/es/typography/Title";
 import { useState } from "react";
+import ContentTitle from '@/components/Title/ContentTitle';
 
 const CreatePsPage = () => {
   const [form] = Form.useForm();
