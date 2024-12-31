@@ -49,11 +49,11 @@ export async function updatePS(psId, data) {
       data: {
         kategori: data.kategori,
         seri:data.seri,
-        harga: data.harga,
+        harga: String(data.harga),
         stok: data.stok,
       },
     });
-``
+
     return {
       status: 200,
       message: "PS updated successfully",
