@@ -32,6 +32,20 @@ export default function PaginatedTable({
     ? [
         ...columns,
         {
+          key: "harga",
+          title: "Harga",
+          dataIndex: "harga",
+          render:(val) => {
+            return formatPrice(parseInt(val) || 0)
+          }
+        },
+        {
+          key: "stok",
+          title: "Stok",
+          dataIndex: "stok",
+        
+        },
+        {
           key: "action",
           title: "Action",
           render: (_, record) => (

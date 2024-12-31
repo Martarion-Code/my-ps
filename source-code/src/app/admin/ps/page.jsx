@@ -1,5 +1,5 @@
 import {  Card } from 'antd';
-// import Title from 'antd/es/typography/Title';
+import Title from 'antd/es/typography/Title';
 import { Suspense } from 'react';
 import Loading from '../loading';
 import { fetchPS, onDelete } from './actions'; // Server action
@@ -28,23 +28,13 @@ export default async function PSPage({
       title: "Seri",
       dataIndex: "seri",
     },
-    {
-      key: "harga",
-      title: "Harga",
-      dataIndex: "harga",
-    },
-    {
-      key: "stok",
-      title: "Stok",
-      dataIndex: "stok",
-    
-    },
+  
   ];
 
   return (
     <Suspense fallback={<Loading/>}>
       <Card>
-        {/* <Title level={2}>List of PS</Title> */}
+        <Title level={2}>List of Console</Title>
        <ButtonCreate />
         <PaginatedTable
           columns={columns}
